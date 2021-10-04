@@ -47,5 +47,6 @@ func (s *Server) Run() {
 	}
 
 	s.Log.Warn(server.ListenAndServe())
+	//TODO: graceful shutdown
 }
 
