@@ -9,8 +9,6 @@ import (
 	"strconv"
 )
 
-
-
 func TextRequest(req *http.Request, result string) error {
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -37,7 +35,6 @@ func TextRequest(req *http.Request, result string) error {
 	result = string(body)
 	return nil
 }
-
 
 func JsonRequest(req *http.Request, result interface{}) error {
 	res, err := http.DefaultClient.Do(req)

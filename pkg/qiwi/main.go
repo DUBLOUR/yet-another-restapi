@@ -4,9 +4,9 @@ import (
 	"yet-another-restapi/pkg/generalApiReader"
 )
 
-type Qiwi struct{
+type Qiwi struct {
 	authToken string
-	endpoint string
+	endpoint  string
 }
 
 func (q Qiwi) CreateLink(money string) (string, error) {
@@ -32,4 +32,3 @@ func (q Qiwi) CreateLink(money string) (string, error) {
 
 	return response, nil
 }
-

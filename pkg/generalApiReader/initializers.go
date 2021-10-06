@@ -31,4 +31,3 @@ func CreateRequest(endpoint string, urlValues, headerValues map[string]string, m
 func CreateGetRequest(endpoint string, urlValues, headerValues map[string]string) (*http.Request, error) {
 	return CreateRequest(endpoint, urlValues, headerValues, "GET")
 }
-

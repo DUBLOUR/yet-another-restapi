@@ -4,28 +4,28 @@ import (
 	"yet-another-restapi/pkg/generalApiReader"
 )
 
-type PayPal struct{
+type PayPal struct {
 	authToken string
-	endpoint string
+	endpoint  string
 }
 
 func (p PayPal) CreateLink(money string) (string, error) {
-	
+
 	req, err := generalApiReader.CreateGetRequest(
 		p.endpoint,
 		map[string]string{
 			"token": p.authToken,
 			"money": money,
 		},
-		map[string]string{}, 
-	) 
-	
+		map[string]string{},
+	)
+
 	if err != nil {
 		return "", nil
 	}
 
 	response := new(struct {
-		Id string `json:"pay_id"`
+		Id   string `json:"pay_id"`
 		Href string `json:"href"`
 	})
 
@@ -35,4 +35,3 @@ func (p PayPal) CreateLink(money string) (string, error) {
 
 	return response.Href, nil
 }
-

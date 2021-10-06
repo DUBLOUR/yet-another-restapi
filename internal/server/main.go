@@ -1,7 +1,11 @@
 package server
 
 import (
+	"errors"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 type ILog interface {
@@ -11,27 +15,15 @@ type ILog interface {
 }
 
 type IPresenter interface {
-	Format(interface{}) string
+	Format(interface{}) (string, error)
 }
-
-type IMoney interface{}
 
 type IPayment interface{}
 
-type IPaymentService interface{
-	Name() string
-	CreatePay(IMoney) (IPayment, error)
-}
-
-type IPaymentServiceRepository interface {
-	Add(name string, service IPaymentService) error
-	All() map[string]IPaymentService
-	ByName(name string) (IPaymentService, bool)
-}
-
 type IModel interface {
-	Price(string) (IMoney, error)
-	CreatePay(money IMoney, serviceName string) (IPayment, error)
+	//Price(string) (IMoney, error)
+	//CreatePay(money IMoney, serviceName string) (IPayment, error)
+	CreateBill(product string, serviceName string) (IPayment, error)
 }
 
 type Server struct {
@@ -48,7 +40,23 @@ func (s *Server) Run() {
 		Handler: h,
 	}
 
-	s.Log.Warn(server.ListenAndServe())
-	//TODO: graceful shutdown
-}
+	go func() {
+		if err := server.ListenAndServe(); err != nil && errors.Is(err, http.ErrServerClosed) {
+			s.Log.Warn("listen: %s\n", err)
+		}
+	}()
 
+	quit := make(chan os.Signal, 1)
+
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	s.Log.Info("Shutting down server...")
+
+	//ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	//defer cancel()
+	//
+	//if err := server.Shutdown(ctx); err != nil {
+	//	log.Fatal("Server forced to shutdown:", err)
+	//}
+
+}

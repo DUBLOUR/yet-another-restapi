@@ -18,27 +18,21 @@ func Handlers(model IModel, presenter IPresenter, logger ILog) http.Handler {
 			return
 		}
 
-		pCost, err := model.Price(product)
-		if err != nil {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
-
-		payment, err := model.CreatePay(pCost, service)
+		payment, err := model.CreateBill(product, service)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		response := struct{
+		response := struct {
 			status string
-			href IPayment
+			href   IPayment
 		}{
 			status: "ok",
-			href: payment,
+			href:   payment,
 		}
 
-		responseStr := presenter.Format(response)
+		responseStr, _ := presenter.Format(response)
 
 		log.Println(responseStr)
 		w.WriteHeader(http.StatusOK)
@@ -47,4 +41,3 @@ func Handlers(model IModel, presenter IPresenter, logger ILog) http.Handler {
 
 	return r
 }
-

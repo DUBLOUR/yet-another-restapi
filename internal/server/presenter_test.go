@@ -48,10 +48,10 @@ func TestJsonPresenter_Format(t *testing.T) {
 		},
 		{
 			"MapResponse",
-			args{data: map[int]interface{} {
+			args{data: map[int]interface{}{
 				1: "str",
 				2: []int{10, 20, 30},
-				3: map[string]string{"x":"yyy"},
+				3: map[string]string{"x": "yyy"},
 			},
 			},
 			`{"1":"str","2":[10,20,30],"3":{"x":"yyy"}}`,
