@@ -1,0 +1,26 @@
+{
+  "syllabus_classics": {
+    "price": "13.99",
+    "avail": true
+  },
+  "weekly_digest_tech": {
+    "price": "2.49",
+    "avail": true
+  },
+  "weekly_digest_psy": {
+    "price": "2.49",
+    "avail": true
+  },
+  "weekly_digest_relationship": {
+    "price": "1.89",
+    "avail": true
+  },
+  "2021bestsellers": {
+    "price": "3.99",
+    "avail": true
+  },
+  "2020bestsellers": {
+    "price": "3.99",
+    "avail": false
+  }
+}

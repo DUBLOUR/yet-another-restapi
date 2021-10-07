@@ -37,6 +37,7 @@ func TextRequest(req *http.Request, result string) error {
 }
 
 func JsonRequest(req *http.Request, result interface{}) error {
+	log.Println(req.URL.String())
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return err

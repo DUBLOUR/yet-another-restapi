@@ -9,8 +9,14 @@ type Qiwi struct {
 	endpoint  string
 }
 
-func (q Qiwi) CreateLink(money string) (string, error) {
+func New(token, endpoint string) *Qiwi {
+	return &Qiwi{
+		token,
+		endpoint,
+	}
+}
 
+func (q Qiwi) CreateLink(money string) (string, error) {
 	req, err := generalApiReader.CreateGetRequest(
 		q.endpoint,
 		map[string]string{
@@ -22,7 +28,7 @@ func (q Qiwi) CreateLink(money string) (string, error) {
 	)
 
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	var response string

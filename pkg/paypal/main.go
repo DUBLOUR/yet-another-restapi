@@ -1,6 +1,7 @@
 package paypal
 
 import (
+	"log"
 	"yet-another-restapi/pkg/generalApiReader"
 )
 
@@ -9,8 +10,15 @@ type PayPal struct {
 	endpoint  string
 }
 
-func (p PayPal) CreateLink(money string) (string, error) {
+func New(token, endpoint string) *PayPal {
+	return &PayPal{
+		token,
+		endpoint,
+	}
+}
 
+func (p PayPal) CreateLink(money string) (string, error) {
+	log.Println("------", money)
 	req, err := generalApiReader.CreateGetRequest(
 		p.endpoint,
 		map[string]string{
@@ -21,7 +29,7 @@ func (p PayPal) CreateLink(money string) (string, error) {
 	)
 
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	response := new(struct {

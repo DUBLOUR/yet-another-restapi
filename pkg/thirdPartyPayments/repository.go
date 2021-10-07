@@ -5,32 +5,33 @@ import (
 	"strings"
 )
 
-type IMoney interface{}
-
-type IPayment interface{}
-
-type IPaymentService interface {
-	CreatePay(IMoney) (IPayment, error)
-}
-
 type CaseInsensitiveRepo struct {
-	m map[string]IPaymentService
+	m map[string]*IPaymentService
 }
 
-func (r CaseInsensitiveRepo) Add(name string, s IPaymentService) error {
+func NewCaseInsensitiveRepo() *CaseInsensitiveRepo {
+	return &CaseInsensitiveRepo{
+		make(map[string]*IPaymentService),
+	}
+}
+
+func (r *CaseInsensitiveRepo) Add(name string, s *IPaymentService) error {
 	name = strings.ToLower(name)
-	if _, alreadyExist := r.m[name]; alreadyExist {
-		return fmt.Errorf("name already used")
+	if _, exist := r.m[name]; exist {
+		return fmt.Errorf("name is already used")
+	}
+	if r.m == nil {
+		r.m = make(map[string]*IPaymentService)
 	}
 	r.m[name] = s
 	return nil
 }
 
-func (r CaseInsensitiveRepo) All() map[string]IPaymentService {
+func (r CaseInsensitiveRepo) All() map[string]*IPaymentService {
 	return r.m
 }
 
-func (r CaseInsensitiveRepo) ByName(name string) (IPaymentService, bool) {
+func (r CaseInsensitiveRepo) ByName(name string) (*IPaymentService, bool) {
 	s, has := r.m[strings.ToLower(name)]
 	return s, has
 }
