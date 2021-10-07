@@ -16,4 +16,6 @@
 
 .idea
 bin/
+data/log
+
 
