@@ -6,14 +6,10 @@ import (
 	"yet-another-restapi/pkg/thirdPartyPayments"
 )
 
-//type IPaymentService interface {
-//	CreatePay(thirdPartyPayments.IMoney) (thirdPartyPayments.IPayment, error)
-//}
-
-type IPaymentServiceRepository interface {
-	Add(name string, s *thirdPartyPayments.IPaymentService) error
-	All() map[string]*thirdPartyPayments.IPaymentService
-	ByName(name string) (*thirdPartyPayments.IPaymentService, bool)
+type IPaymentGatewayRepository interface {
+	Add(name string, s *thirdPartyPayments.IPaymentGateway) error
+	All() map[string]*thirdPartyPayments.IPaymentGateway
+	ByName(name string) (*thirdPartyPayments.IPaymentGateway, bool)
 }
 
 type IProductsRepository interface {
@@ -23,7 +19,7 @@ type IProductsRepository interface {
 }
 
 type Model struct {
-	Services IPaymentServiceRepository
+	Gateways IPaymentGatewayRepository
 	Products IProductsRepository
 }
 
@@ -38,8 +34,8 @@ func (m *Model) LoadProducts(jsonFilename string) error {
 	return m.Products.LoadJson(jsonFilename)
 }
 
-func (m *Model) AddService(name string, s *thirdPartyPayments.IPaymentService) error {
-	return m.Services.Add(name, s)
+func (m *Model) AddGateway(name string, s *thirdPartyPayments.IPaymentGateway) error {
+	return m.Gateways.Add(name, s)
 }
 
 func (m Model) price(product string) (product.IMoney, error) {
@@ -53,8 +49,8 @@ func (m Model) price(product string) (product.IMoney, error) {
 	return p.Price, nil
 }
 
-func (m *Model) CreateBill(product string, serviceName string) (IPayment, error) {
-	service, has := m.Services.ByName(serviceName)
+func (m *Model) CreateBill(product string, gatewayName string) (IPayment, error) {
+	g, has := m.Gateways.ByName(gatewayName)
 	if !has {
 		return "", fmt.Errorf("unknown payment service")
 	}
@@ -62,7 +58,7 @@ func (m *Model) CreateBill(product string, serviceName string) (IPayment, error)
 	if err != nil {
 		return "", err
 	}
-	bill, err := (*service).CreatePay(cost)
+	bill, err := (*g).CreatePay(cost)
 	if err != nil {
 		return "", err
 	}

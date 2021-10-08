@@ -8,18 +8,19 @@ import (
 func Handlers(model IModel, presenter IPresenter, logger ILog) http.Handler {
 	r := http.NewServeMux()
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
 		var product string = r.URL.Query().Get("product_id")
-		var service string = r.URL.Query().Get("service")
+		var gateway string = r.URL.Query().Get("service")
 		logger.Info("Query:", r.URL.Query())
 
-		if service == "" || product == "" {
+		if gateway == "" || product == "" {
 			logger.Debug("Empty fields")
 			logger.Info("Respond with status", http.StatusBadRequest)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		payment, err := model.CreateBill(product, service)
+		payment, err := model.CreateBill(product, gateway)
 		if err != nil {
 			logger.Debug(err)
 			logger.Info("Respond with status", http.StatusInternalServerError)
