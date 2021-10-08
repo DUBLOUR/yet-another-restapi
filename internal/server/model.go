@@ -19,15 +19,21 @@ type IProductsRepository interface {
 }
 
 type Model struct {
-	Gateways IPaymentGatewayRepository
-	Products IProductsRepository
+	Gateways          IPaymentGatewayRepository
+	Products          IProductsRepository
+	errorRedirectLink string
 }
 
 func DefaultModel() *Model {
 	return &Model{
 		thirdPartyPayments.NewCaseInsensitiveRepo(),
 		product.NewRepo(),
+		DefaultErrorRedirectLink,
 	}
+}
+
+func (m *Model) DefaultResponse() string {
+	return m.errorRedirectLink
 }
 
 func (m *Model) LoadProducts(jsonFilename string) error {

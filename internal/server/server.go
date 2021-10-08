@@ -20,10 +20,6 @@ type Server struct {
 	ShutdownWaiting time.Duration
 }
 
-const ProductFilename string = "data/products.json"
-const PayPalToken string = "-"
-const QiwiToken string = "-"
-
 func (s *Server) Init() error {
 	s.Log.Info("Init server...")
 	s.Log.Debug("Load file", ProductFilename)

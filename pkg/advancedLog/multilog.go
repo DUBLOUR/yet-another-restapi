@@ -24,7 +24,7 @@ func NewMultiLogger(filename string) *MultiLogger {
 	}
 }
 
-func (l MultiLogger) Print(out []io.Writer, v ...interface{}) {
+func (l MultiLogger) print(out []io.Writer, v ...interface{}) {
 	for _, flow := range out {
 		_, err := fmt.Fprint(flow, v...)
 		if err != nil {
@@ -35,7 +35,7 @@ func (l MultiLogger) Print(out []io.Writer, v ...interface{}) {
 
 func (l MultiLogger) Debug(v ...interface{}) {
 	flows := []io.Writer{os.Stdout}
-	l.Print(flows, "(--) ", fmt.Sprintln(v...))
+	l.print(flows, "(--) ", fmt.Sprintln(v...))
 }
 
 func (l MultiLogger) Info(v ...interface{}) {
@@ -43,7 +43,7 @@ func (l MultiLogger) Info(v ...interface{}) {
 		os.Stdout,
 		l.files["main"],
 	}
-	l.Print(flows, "(II) ", fmt.Sprintln(v...))
+	l.print(flows, "(II) ", fmt.Sprintln(v...))
 }
 
 func (l MultiLogger) Warn(v ...interface{}) {
@@ -51,5 +51,5 @@ func (l MultiLogger) Warn(v ...interface{}) {
 		os.Stdout,
 		l.files["main"],
 	}
-	l.Print(flows, "(WW) ", fmt.Sprintln(v...))
+	l.print(flows, "(WW) ", fmt.Sprintln(v...))
 }

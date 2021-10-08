@@ -1,7 +1,6 @@
 package paypal
 
 import (
-	"log"
 	"yet-another-restapi/pkg/generalApiReader"
 )
 
@@ -18,7 +17,6 @@ func New(token, endpoint string) *PayPal {
 }
 
 func (p PayPal) CreateLink(money string) (string, error) {
-	log.Println("------", money)
 	req, err := generalApiReader.CreateGetRequest(
 		p.endpoint,
 		map[string]string{

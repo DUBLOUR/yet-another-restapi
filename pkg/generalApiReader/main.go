@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"strconv"
 )
 
 func TextRequest(req *http.Request, result string) error {
@@ -17,11 +15,11 @@ func TextRequest(req *http.Request, result string) error {
 
 	defer func() {
 		if err := res.Body.Close(); err != nil {
-			log.Println(err)
+			//log.Println(err)
 		}
 	}()
 
-	log.Println("[" + strconv.Itoa(res.StatusCode) + ":] " + req.URL.String())
+	//log.Println("[" + strconv.Itoa(res.StatusCode) + ":] " + req.URL.String())
 
 	if res.StatusCode != http.StatusOK {
 		return fmt.Errorf("respond with %d http code", res.StatusCode)
@@ -37,7 +35,7 @@ func TextRequest(req *http.Request, result string) error {
 }
 
 func JsonRequest(req *http.Request, result interface{}) error {
-	log.Println(req.URL.String())
+	//log.Println(req.URL.String())
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return err
@@ -45,11 +43,11 @@ func JsonRequest(req *http.Request, result interface{}) error {
 
 	defer func() {
 		if err := res.Body.Close(); err != nil {
-			log.Println(err)
+			//log.Println(err)
 		}
 	}()
 
-	log.Println("[" + strconv.Itoa(res.StatusCode) + ":] " + req.URL.String())
+	//log.Println("[" + strconv.Itoa(res.StatusCode) + ":] " + req.URL.String())
 
 	if res.StatusCode != http.StatusOK {
 		return fmt.Errorf("respond with %d http code", res.StatusCode)

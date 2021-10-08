@@ -11,6 +11,7 @@ type ILog interface {
 }
 
 type IPresenter interface {
+	ContentType() string
 	Format(interface{}) (string, error)
 }
 
@@ -20,4 +21,5 @@ type IModel interface {
 	LoadProducts(string) error
 	AddGateway(string, *thirdPartyPayments.IPaymentGateway) error
 	CreateBill(product string, gatewayName string) (IPayment, error)
+	DefaultResponse() string
 }

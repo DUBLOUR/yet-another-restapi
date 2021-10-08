@@ -11,3 +11,7 @@ func (JsonPresenter) Format(data interface{}) (string, error) {
 	}
 	return string(j), nil
 }
+
+func (JsonPresenter) ContentType() string {
+	return "text/json"
+}
