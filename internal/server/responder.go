@@ -48,7 +48,7 @@ func (r *Responder) SetBody(body string) {
 
 func (r *Responder) postHandling() {
 	responseTime := time.Since(r.startAt).Microseconds()
-	r.Set("X-Response-Time", fmt.Sprintf("%vms", responseTime))
+	r.Set("X-Response-Time", fmt.Sprintf("%vus", responseTime))
 }
 
 func (r *Responder) WriteResponse() {

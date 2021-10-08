@@ -2,6 +2,8 @@ package thirdPartyPayments
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 	"yet-another-restapi/pkg/paypal"
 	"yet-another-restapi/pkg/qiwi"
 )
@@ -37,18 +39,30 @@ func (p Qiwi) CreatePay(m IMoney) (IPayment, error) {
 	return p.adaptee.CreateLink(fmt.Sprintf("%v", m))
 }
 
+
+func randomString(length int) string {
+	var letters = []rune("0123456789abcdefghijklmnopqrstuvwxyz")
+
+	rand.Seed(time.Now().UnixNano())
+	s := make([]rune, length)
+	for i := range s {
+		s[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(s)
+}
+
 type VirtualPay struct {
 	formatStr string
 }
 
 func DefaultVirtualPay() *VirtualPay {
 	return &VirtualPay{
-		"https://virtualpay.dev/?money=%v",
+		"https://virtualpay.dev/?money=%v&id=%v",
 	}
 }
 
 func (p VirtualPay) CreatePay(m IMoney) (IPayment, error) {
-	return fmt.Sprintf(p.formatStr, m), nil
+	return fmt.Sprintf(p.formatStr, m, randomString(24)), nil
 }
 
 func (p PayPal) Name() string     { return "PayPal" }
